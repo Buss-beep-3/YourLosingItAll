@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JesterKing</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    video {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -100;
+      transform: translateX(-50%) translateY(-50%);
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      text-align: center;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .content {
+      margin-top: 120px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 36px;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-top: 10px;
+    }
+
+    button {
+      background-color: black;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: white;
+      color: black;
+    }
+  </style>
+</head>
+
+<body>
+  <video autoplay loop>
+    <!-- Replace 'your-video-source.mp4' with the path to your video file -->
+    <source src="audio/yourlosingitall.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <header>
+    JesterKing
+  </header>
+
+  <div class="content">
+    <h1>JesterKing</h1>
+    <h2>patch notes go here</h2>
+    <button onclick="window.location.href='new-page.html'">Go to Main Site</button>
+  </div>
+
+  <script>
+    window.onscroll = function () {
+      var header = document.querySelector('header');
+      if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+        header.style.padding = '10px';
+        header.style.fontSize = '20px';
+      } else {
+        header.style.padding = '20px';
+        header.style.fontSize = '24px';
+      }
+    };
+  </script>
+</body>
+
+</html>
