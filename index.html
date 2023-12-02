@@ -62,6 +62,7 @@
       font-size: 20px;
       cursor: pointer;
       transition: background-color 0.3s;
+      display: none;
     }
 
     #new-page-button:hover {
@@ -71,25 +72,26 @@
 </head>
 
 <body>
-  <video id="background-video" loop>
+  <video id="background-video" loop muted>
     <!-- Replace 'your-video-source.mp4' with the path to your video file -->
-    <source src="audio/youlosingitall.mp4" type="video/mp4">
+    <source src="audio/yourlosingitall.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
 
   <div id="button-container">
-    <button id="play-button" onclick="playVideo()">Load assets</button>
+    <button id="play-button" onclick="playVideo()">Load Assets</button>
+    <button id="new-page-button" onclick="goToNewPage()">Go to Main Page</button>
   </div>
-
-  <button id="new-page-button" onclick="goToNewPage()">Go to Main Site</button>
 
   <script>
     function playVideo() {
       var video = document.getElementById('background-video');
-      var buttonContainer = document.getElementById('button-container');
+      var playButton = document.getElementById('play-button');
+      var newPageButton = document.getElementById('new-page-button');
 
       video.style.display = 'block';
-      buttonContainer.style.display = 'none';
+      playButton.style.display = 'none';
+      newPageButton.style.display = 'block';
 
       // Start playing the video
       video.play();
