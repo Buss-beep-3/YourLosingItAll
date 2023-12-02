@@ -11,6 +11,7 @@
       padding: 0;
       overflow: hidden;
       font-family: Arial, sans-serif;
+      background-color: #000; /* Set a background color */
     }
 
     video {
@@ -48,19 +49,39 @@
     #play-button:hover {
       filter: blur(0);
     }
+
+    #new-page-button {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #new-page-button:hover {
+      background-color: #2980b9;
+    }
   </style>
 </head>
 
 <body>
-  <video id="background-video" loop muted>
+  <video id="background-video" loop>
     <!-- Replace 'your-video-source.mp4' with the path to your video file -->
-    <source src="audio/yourlosingitall.mp4" type="video/mp4">
+    <source src="audio/youlosingitall.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
 
   <div id="button-container">
-    <button id="play-button" onclick="playVideo()">Load Assets</button>
+    <button id="play-button" onclick="playVideo()">Load assets</button>
   </div>
+
+  <button id="new-page-button" onclick="goToNewPage()">Go to Main Site</button>
 
   <script>
     function playVideo() {
@@ -72,6 +93,10 @@
 
       // Start playing the video
       video.play();
+    }
+
+    function goToNewPage() {
+      window.location.href = 'passwordlollybye.html';
     }
   </script>
 </body>
