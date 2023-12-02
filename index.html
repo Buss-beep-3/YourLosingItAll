@@ -3,17 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your losing it all....</title>
+    <title>Your Losing It All...</title>
 </head>
 <body>
 
-<audio autoplay loop>
+<button onclick="startAudio()">Play Audio</button>
+
+<audio id="backgroundAudio" loop>
     <source src="audio/nowthisisyourfaaaaaault.mp3" type="audio/mp3">
     Your browser does not support the audio tag.
 </audio>
 
+<script>
+    function startAudio() {
+        var audio = document.getElementById('backgroundAudio');
+        audio.play();
+    }
+</script>
+
 </body>
 </html>
+
 
 
 
