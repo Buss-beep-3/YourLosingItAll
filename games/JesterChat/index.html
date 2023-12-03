@@ -101,22 +101,32 @@
   }
 
   function sendMessage() {
-    const name = document.getElementById('name').value;
-    const message = document.getElementById('message').value;
+  const name = document.getElementById('name').value;
+  const message = document.getElementById('message').value;
 
-    if (name && message) {
-      const messageData = {
-        name: name,
-        message: message,
-        timestamp: firebase.database.ServerValue.TIMESTAMP
-      };
+  if (name && message) {
+    const messageData = {
+      name: name,
+      message: message,
+      timestamp: firebase.database.ServerValue.TIMESTAMP
+    };
 
+    try {
+      // Log the message data to verify it's being sent correctly
+      console.log('Sending message:', messageData);
+
+      // Push the message data to the Firebase Realtime Database
       database.ref('messages').push(messageData);
 
       // Clear the message input field
       document.getElementById('message').value = '';
+    } catch (error) {
+      // Log any error that occurs during the send process
+      console.error('Error sending message:', error.message);
     }
   }
+}
+
 
   // Listen for new messages and update the chat box
   database.ref('messages').on('child_added', (snapshot) => {
