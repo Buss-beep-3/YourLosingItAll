@@ -1,22 +1,132 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title> JesterChat </title>
-    <!-- Google fonts. -->
-    <link href='https://fonts.googleapis.com/css?family=Bungee Outline' rel='stylesheet'/>
-    <link href='https://fonts.googleapis.com/css?family=Varela Round' rel='stylesheet'/>
-    <!-- Use font awesome icons. -->
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <!-- Use firebase app and database. -->
-    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JesterChat</title>
+  <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js"></script>
+  <style>
+    body {
+      background-color: purple;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
 
-    <!-- The CSS and JS file must be declared after the things above-->
-    <link rel="stylesheet" href="main.css"/>
-    <script type="text/javascript" src="scfipt.js"></script>
+    h1 {
+      text-align: center;
+      font-style: italic;
+      font-weight: bold;
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
 
-  </head>
-  <body>
-  </body>
+    #flashing-header {
+      animation: flash 1s infinite;
+      text-align: center;
+    }
+
+    @keyframes flash {
+      0% {
+        color: white;
+      }
+      50% {
+        color: blue; /* or any color you prefer */
+      }
+      100% {
+        color: white;
+      }
+    }
+
+    div {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    #chat-box {
+      max-height: 200px;
+      overflow-y: scroll;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      padding: 10px;
+      background-color: #fff;
+    }
+
+    input, button {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1 id="flashing-header">Jester<span id="chat-text">Chat</span></h1>
+
+<div>
+  <div id="chat-box"></div>
+  <input type="text" id="name" placeholder="Your Name">
+  <input type="text" id="message" placeholder="Type your message">
+  <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+  // Firebase configuration
+  const firebaseConfig = {
+  apiKey: "AIzaSyCu3cXhc4lz7NQxSIiceWLrVuWT0jSAXm0",
+  authDomain: "yourmine-d7848.firebaseapp.com",
+  projectId: "yourmine-d7848",
+  storageBucket: "yourmine-d7848.appspot.com",
+  messagingSenderId: "580990072013",
+  appId: "1:580990072013:web:e7157dcc2847f06696e584",
+  measurementId: "G-BTGKS84LJ6"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+
+  // Check if the user's name is already stored in local storage
+  const storedName = localStorage.getItem('chatAppName');
+  if (storedName) {
+    document.getElementById('name').value = storedName;
+  } else {
+    // Prompt the user for their name if it's not stored
+    const userName = prompt("Please enter your name:");
+    if (userName) {
+      document.getElementById('name').value = userName;
+      localStorage.setItem('chatAppName', userName);
+    }
+  }
+
+  function sendMessage() {
+    const name = document.getElementById('name').value;
+    const message = document.getElementById('message').value;
+
+    if (name && message) {
+      const messageData = {
+        name: name,
+        message: message,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      };
+
+      database.ref('messages').push(messageData);
+
+      // Clear the message input field
+      document.getElementById('message').value = '';
+    }
+  }
+
+  // Listen for new messages and update the chat box
+  database.ref('messages').on('child_added', (snapshot) => {
+    const message = snapshot.val();
+    const chatBox = document.getElementById('chat-box');
+    const messageElement = document.createElement('div');
+    messageElement.innerText = `${message.name}: ${message.message}`;
+    chatBox.appendChild(messageElement);
+  });
+</script>
+
+</body>
 </html>
