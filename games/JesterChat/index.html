@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JesterChat</title>
+  <!-- Include Firebase SDK version 12.8.0 -->
   <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js"></script>
   <style>
@@ -33,6 +34,9 @@
       50% {
         color: blue; /* or any color you prefer */
       }
+      75% {
+        color: green;
+      }
       100% {
         color: white;
       }
@@ -44,6 +48,7 @@
       padding: 20px;
       border: 1px solid #ccc;
       border-radius: 8px;
+      overflow: hidden;
     }
 
     #chat-box {
@@ -55,6 +60,10 @@
       background-color: #fff;
     }
 
+    #chat-box div {
+      transition: font-size 0.3s ease;
+    }
+
     input, button {
       margin-bottom: 10px;
     }
@@ -64,12 +73,14 @@
 
 <h1 id="flashing-header">Jester<span id="chat-text">Chat</span></h1>
 
-<div>
-  <div id="chat-box"></div>
-  <input type="text" id="name" placeholder="Your Name">
-  <input type="text" id="message" placeholder="Type your message">
-  <button onclick="sendMessage()">Send</button>
+<div id="chat-box">
+  <!-- Example message with a long text to demonstrate scrolling -->
+  <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam aliquet eros nec nisl tincidunt tincidunt.</div>
 </div>
+
+<input type="text" id="name" placeholder="Your Name">
+<input type="text" id="message" placeholder="Type your message">
+<button onclick="sendMessage()">Send</button>
 
 <script>
   // Firebase configuration
@@ -81,11 +92,11 @@
   messagingSenderId: "580990072013",
   appId: "1:580990072013:web:e7157dcc2847f06696e584",
   measurementId: "G-BTGKS84LJ6"
-  };
+};
 
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
   // Check if the user's name is already stored in local storage
   const storedName = localStorage.getItem('chatAppName');
@@ -101,32 +112,31 @@
   }
 
   function sendMessage() {
-  const name = document.getElementById('name').value;
-  const message = document.getElementById('message').value;
+    const name = document.getElementById('name').value;
+    const message = document.getElementById('message').value;
 
-  if (name && message) {
-    const messageData = {
-      name: name,
-      message: message,
-      timestamp: firebase.database.ServerValue.TIMESTAMP
-    };
+    if (name && message) {
+      const messageData = {
+        name: name,
+        message: message,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      };
 
-    try {
-      // Log the message data to verify it's being sent correctly
-      console.log('Sending message:', messageData);
+      try {
+        // Log the message data to verify it's being sent correctly
+        console.log('Sending message:', messageData);
 
-      // Push the message data to the Firebase Realtime Database
-      database.ref('messages').push(messageData);
+        // Push the message data to the Firebase Realtime Database
+        database.ref('messages').push(messageData);
 
-      // Clear the message input field
-      document.getElementById('message').value = '';
-    } catch (error) {
-      // Log any error that occurs during the send process
-      console.error('Error sending message:', error.message);
+        // Clear the message input field
+        document.getElementById('message').value = '';
+      } catch (error) {
+        // Log any error that occurs during the send process
+        console.error('Error sending message:', error.message);
+      }
     }
   }
-}
-
 
   // Listen for new messages and update the chat box
   database.ref('messages').on('child_added', (snapshot) => {
@@ -135,6 +145,12 @@
     const messageElement = document.createElement('div');
     messageElement.innerText = `${message.name}: ${message.message}`;
     chatBox.appendChild(messageElement);
+
+    // Trigger reflow to apply the transition
+    messageElement.offsetHeight;
+
+    // Shrink the font size of the messages
+    messageElement.style.fontSize = '14px';
   });
 </script>
 
